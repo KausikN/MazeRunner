@@ -233,10 +233,15 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         PathTreeNode parent;
         // Node Properties
         
-        public PathTreeNode(String id_param, int no_of_children_param, PathTreeNode[] children_param, PathTreeNode parent_param)
+        // Game Params
+        boolean final_node;
+        // Game Params
+        
+        public PathTreeNode(String id_param, int no_of_children_param, PathTreeNode[] children_param, PathTreeNode parent_param, boolean final_node_param)
         {
             id = id_param;
             no_of_children = no_of_children_param;
+            
             if(children_param != null)
             { 
                 children = new PathTreeNode[children_param.length];
@@ -251,7 +256,10 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
 //                }
 //            }
             else children = null;
+            
             parent = parent_param;
+            
+            final_node = final_node_param;
         }
     }
     
@@ -270,7 +278,12 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         // Tree
         PathTreeNode RootNode;
         int current_tree_depth;
+        int no_of_nodes;
         // Tree
+        
+        // Game Params
+        int no_of_final_nodes;
+        // Game Params
         
         
         public PathTree()
@@ -278,19 +291,32 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
             
         }
         
-        void InitPathTreeParameters(int max_tree_depth_param, float dead_end_probability_param, int max_branches_param, float branch_formation_probability_param, float cycle_formation_probability_param)
+        void InitPathTreeParameters(int max_tree_depth_param, float dead_end_probability_param, 
+                int max_branches_param, float branch_formation_probability_param, float cycle_formation_probability_param, 
+                int no_of_final_nodes_param)
         {
             max_tree_depth = max_tree_depth_param;
             dead_end_probability = dead_end_probability_param;
+            
             max_branches = max_branches_param;
             branch_formation_probability = branch_formation_probability_param;
             cycle_formation_probability = cycle_formation_probability_param;
+            
+            no_of_final_nodes = no_of_final_nodes_param;
+            
+            no_of_nodes = 0;
         }
         
-        void GeneratePathTree()
+        void GeneratePathTree() 
         {
+            // Init
             current_tree_depth = 0;
+            
+            // Generate
             RootNode = GeneratePathTree_Recursive("1", null, 0);
+            
+            // Set Final Nodes
+            SetFinalNodes();
         }
         
         PathTreeNode GeneratePathTree_Recursive(String id, PathTreeNode parent, int depth)
@@ -302,11 +328,12 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
                 // Dead End
                 if(children_present == null)
                 {
-                    PathTreeNode newNode = new PathTreeNode(id, 0, new PathTreeNode[max_branches], parent);
+                    PathTreeNode newNode = new PathTreeNode(id, 0, new PathTreeNode[max_branches], parent, false);
                     for(int i=0;i<max_branches;i++)
                     {
                         newNode.children[i] = null;
                     }
+                    no_of_nodes = no_of_nodes + 1;
                     return newNode;
                 }
                 // Non Dead End
@@ -315,23 +342,40 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
                     if(children_present[i] == 1) no_of_children = no_of_children + 1;
                 }
 
-                PathTreeNode newNode = new PathTreeNode(id, no_of_children, new PathTreeNode[max_branches], parent);
+                PathTreeNode newNode = new PathTreeNode(id, no_of_children, new PathTreeNode[max_branches], parent, false);
                 for(int i=0;i<max_branches;i++)
                 {
                     if(children_present[i] == 1)
                     { 
-                        if(random.nextInt(100 + 1) <= (cycle_formation_probability*100))
+                        if(random.nextInt(100 + 1) <= (cycle_formation_probability*100))    // For Cycle child node
                         {
-                            newNode.children[i] = GetCycleDestinationNode(id + "_" + i);
+                            newNode.children[i] = GetRandomDestinationNode(id + "_" + i, 0);
                         }
-                        else newNode.children[i] = GeneratePathTree_Recursive(id + "_" + i, newNode, depth+1);
+                        else newNode.children[i] = GeneratePathTree_Recursive(id + "_" + i, newNode, depth+1);  // For normal child node
                     }
-                    else newNode.children[i] = null;
+                    else newNode.children[i] = null;    // For no child node
                 }
                 current_tree_depth = current_tree_depth + 1;
+                no_of_nodes = no_of_nodes + 1;
                 return newNode;
             }
             return null;
+        }
+        
+        void SetFinalNodes()
+        {
+            PathTreeNode finalnode;
+            String id = "";
+            for(int i=0;i<no_of_final_nodes && i < no_of_nodes;i++)
+            {
+                finalnode = GetRandomDestinationNode(id, max_tree_depth-1);
+                while(finalnode == null || finalnode.final_node == true)
+                {
+                    finalnode = GetRandomDestinationNode(id, max_tree_depth-1);
+//                    if(finalnode != null) id = finalnode.id;
+                }
+                finalnode.final_node = true;
+            }
         }
         
         int[] GenerateChildren()
@@ -356,12 +400,14 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
             }
         }
         
-        PathTreeNode GetCycleDestinationNode(String id)
+        PathTreeNode GetRandomDestinationNode(String id, int min_depth)
         {
             PathTreeNode CurrentNode = RootNode;
-            int random_depth = random.nextInt(max_tree_depth) + 1;
+            int random_depth = random.nextInt(max_tree_depth - min_depth) + 1 + min_depth;
             while(random_depth > 0)
             {
+                if(CurrentNode.no_of_children == 0) return CurrentNode; // If Terminal Node return it
+                
                 int random_child = random.nextInt(CurrentNode.no_of_children + 1);
                 for(int i=0;i<max_branches;i++)
                 {
@@ -387,7 +433,7 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         {
             if(p != null)
             {
-                System.out.println(depth + " - " + p.id);
+                System.out.println(depth + " - " + p.id + ", final - " + p.final_node);
                 for(int i=0;i<max_branches;i++)
                 {
                     if(p.children[i] != null)
@@ -403,7 +449,7 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
     
     private void GenerateMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateMaze_ButtonActionPerformed
     Maze = new PathTree();
-    Maze.InitPathTreeParameters(2, 0.5f, 3, 0.5f, 0.0f);
+    Maze.InitPathTreeParameters(2, 0.5f, 3, 0.5f, 0.0f, 1);
     
     Maze.GeneratePathTree();
     
