@@ -1,5 +1,9 @@
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader;
+import java.awt.Color;
 import java.util.Random;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -85,24 +89,44 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         Left_Button.setForeground(new java.awt.Color(0, 204, 204));
         Left_Button.setText("Go");
         Left_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        Left_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Left_ButtonActionPerformed(evt);
+            }
+        });
 
         Front_Button.setBackground(new java.awt.Color(0, 0, 0));
         Front_Button.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         Front_Button.setForeground(new java.awt.Color(0, 204, 204));
         Front_Button.setText("Go");
         Front_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        Front_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Front_ButtonActionPerformed(evt);
+            }
+        });
 
         Back_Button.setBackground(new java.awt.Color(0, 0, 0));
         Back_Button.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         Back_Button.setForeground(new java.awt.Color(0, 204, 204));
         Back_Button.setText("Go");
         Back_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        Back_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Back_ButtonActionPerformed(evt);
+            }
+        });
 
         Right_Button.setBackground(new java.awt.Color(0, 0, 0));
         Right_Button.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         Right_Button.setForeground(new java.awt.Color(0, 204, 204));
         Right_Button.setText("Go");
         Right_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        Right_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Right_ButtonActionPerformed(evt);
+            }
+        });
 
         GenerateMaze_Button.setBackground(new java.awt.Color(0, 0, 0));
         GenerateMaze_Button.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
@@ -120,12 +144,22 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         SolutionMaze_Button.setForeground(new java.awt.Color(0, 204, 204));
         SolutionMaze_Button.setText("Solution");
         SolutionMaze_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        SolutionMaze_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SolutionMaze_ButtonActionPerformed(evt);
+            }
+        });
 
         RestartMaze_Button.setBackground(new java.awt.Color(0, 0, 0));
         RestartMaze_Button.setFont(new java.awt.Font("Dialog", 1, 12)); // NOI18N
         RestartMaze_Button.setForeground(new java.awt.Color(0, 204, 204));
         RestartMaze_Button.setText("Restart Maze");
         RestartMaze_Button.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(0, 204, 204)));
+        RestartMaze_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RestartMaze_ButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Background_PanelLayout = new javax.swing.GroupLayout(Background_Panel);
         Background_Panel.setLayout(Background_PanelLayout);
@@ -283,6 +317,7 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         
         // Game Params
         int no_of_final_nodes;
+        String[] final_node_ids;
         // Game Params
         
         
@@ -313,9 +348,9 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
             current_tree_depth = 0;
             
             // Generate
-            RootNode = GeneratePathTree_Recursive("1", null, 0);
+            RootNode = GeneratePathTree_Recursive("0", null, 0);
             
-            // Set Final Nodes
+            // Set Final Nodes and store ids
             SetFinalNodes();
         }
         
@@ -364,9 +399,13 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         
         void SetFinalNodes()
         {
+            if(no_of_final_nodes > no_of_nodes) no_of_final_nodes = no_of_nodes;
+            
+            final_node_ids = new String[no_of_final_nodes];
+            
             PathTreeNode finalnode;
             String id = "";
-            for(int i=0;i<no_of_final_nodes && i < no_of_nodes;i++)
+            for(int i=0;i<no_of_final_nodes;i++)
             {
                 finalnode = GetRandomDestinationNode(id, max_tree_depth-1);
                 while(finalnode == null || finalnode.final_node == true)
@@ -375,6 +414,7 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
 //                    if(finalnode != null) id = finalnode.id;
                 }
                 finalnode.final_node = true;
+                final_node_ids[i] = finalnode.id;
             }
         }
         
@@ -400,13 +440,50 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
             }
         }
         
-        PathTreeNode GetRandomDestinationNode(String id, int min_depth)
+        PathTreeNode GetNode_FromID(String id)
+        {
+            PathTreeNode CurrentNode = RootNode;
+            
+            int str_index = 0;
+            String node = "";
+            while(str_index < id.length())
+            {
+                if(id.charAt(str_index) != '_') node = node + id.charAt(str_index);
+                if(id.charAt(str_index) == '_' || str_index == id.length() - 1)
+                {
+                    int branch_no = Integer.parseInt(node);
+                    
+                    if(CurrentNode.children[branch_no].id.equals(id)) return CurrentNode.children[branch_no];   // Return Dest Node
+                    CurrentNode = CurrentNode.children[branch_no];
+
+//                    for(int i=0;i<max_branches;i++)
+//                    {
+//                        if(CurrentNode.children[i] != null)
+//                        {
+//                            branch_no = branch_no - 1;
+//                            if(branch_no == 0)
+//                            {
+//                                if(CurrentNode.children[i].id.equals(id)) return CurrentNode.children[i];   // Return Dest Node
+//
+//                                CurrentNode = CurrentNode.children[i];
+//                                i = max_branches;   // BREAK
+//                            }
+//                        }
+//                    }
+                    node = "";
+                }
+                str_index = str_index + 1;
+            }
+            return CurrentNode;
+        }
+        
+        PathTreeNode GetRandomDestinationNode(String src_id, int min_depth)
         {
             PathTreeNode CurrentNode = RootNode;
             int random_depth = random.nextInt(max_tree_depth - min_depth) + 1 + min_depth;
             while(random_depth > 0)
             {
-                if(CurrentNode.no_of_children == 0) return CurrentNode; // If Terminal Node return it
+                if(CurrentNode == null || CurrentNode.no_of_children == 0) return CurrentNode; // If Terminal Node return it
                 
                 int random_child = random.nextInt(CurrentNode.no_of_children + 1);
                 for(int i=0;i<max_branches;i++)
@@ -416,7 +493,7 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
                         random_child = random_child - 1;
                         if(random_child == 0)
                         {
-                            if(CurrentNode.children[i].id.equals(id)) return CurrentNode;   // If going to same node change to the parent instead -- node cant go to same node
+                            if(CurrentNode.children[i].id.equals(src_id)) return CurrentNode;   // If going to same node change to the parent instead -- node cant go to same node
                             
                             CurrentNode = CurrentNode.children[i];
                             i = max_branches;   // BREAK
@@ -433,7 +510,8 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         {
             if(p != null)
             {
-                System.out.println(depth + " - " + p.id + ", final - " + p.final_node);
+                if(p.final_node) System.out.println(depth + " - " + p.id + " : final");
+                else System.out.println(depth + " - " + p.id);
                 for(int i=0;i<max_branches;i++)
                 {
                     if(p.children[i] != null)
@@ -443,19 +521,253 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
                 }
             }
         }
+        
+        void DisplayFinishPaths()
+        {
+            for(int i=0;i<no_of_final_nodes;i++)
+            {
+                System.out.println("Finish Path: " + (i+1));
+
+                int str_index = 0;
+                String node = "";
+                while(str_index < final_node_ids[i].length())
+                {
+                    if(final_node_ids[i].charAt(str_index) != '_') node = node + final_node_ids[i].charAt(str_index);
+                    if(final_node_ids[i].charAt(str_index) == '_' || str_index == final_node_ids[i].length() - 1)
+                    {
+                        System.out.print(node + " -> ");
+                        node = "";
+                    }
+                    str_index = str_index + 1;
+                }
+                System.out.print("finish");
+                System.out.println("");
+            }
+        }
+        
+        void DisplayNodeProperties(PathTreeNode node)
+        {
+            System.out.println("Node: ");
+            System.out.println("\tID: " + node.id);
+            System.out.println("\tNo of children: " + node.no_of_children);
+            System.out.println("\tChildren: ");
+            for(int i=0;i<max_branches;i++)
+            {
+                if(node.children[i] != null) System.out.println("\t\t" + node.id + "_" + i + " : " + node.children[i].id);
+                else System.out.println("\t\t" + node.id + "_" + i + " : " + "null");
+            }
+            System.out.println("\tFinal: " + node.final_node);
+        }
+    }
+    
+    public class MazeNavigate
+    {
+        // Player Params
+        PathTree maze;
+        PathTreeNode CurrentNode;
+        // Player Params
+        
+        // Game Properties
+        GUIProperties GUI;
+        // Game Properties
+        
+        public MazeNavigate(PathTree maze_param, GUIProperties GUI_param)
+        {
+            maze = maze_param;
+            CurrentNode = maze.RootNode;
+            
+            GUI = GUI_param;
+        }
+        
+        PathTreeNode Move(boolean goBack, int move_to_branch)
+        {
+            if(CurrentNode == null) 
+            {
+                System.out.println("HELLOOO NULLL BOIII");
+                return null;
+            }
+            
+            if(goBack)
+            {
+                if(CurrentNode.parent != null) CurrentNode = CurrentNode.parent;
+                return CurrentNode;
+            }
+            else 
+            {
+                int branch_no = move_to_branch;
+                CurrentNode = CurrentNode.children[branch_no];
+//                for(int i=0;i<maze.max_branches;i++)
+//                {
+//                    if(CurrentNode.children[i] != null)
+//                    {
+//                        if(branch_no == 0)
+//                        {
+//                            CurrentNode = CurrentNode.children[i];
+//                            i = maze.max_branches;   // BREAK
+//                        }
+//                        branch_no = branch_no - 1;
+//                    }
+//                }
+                return CurrentNode;
+            }
+        }
+        
+        void UpdateGUI()
+        {
+            // Parent
+            if(CurrentNode.parent != null)
+            { 
+                GUI.goBack_Label.setBackground(Color.WHITE);
+                GUI.goBack_Button.setEnabled(true);
+            }
+            else 
+            {
+                GUI.goBack_Label.setBackground(Color.BLACK);
+                GUI.goBack_Button.setEnabled(false);
+            }
+            
+            // Branches
+            for(int i=0;i<GUI.max_branches;i++)
+            {
+                if(CurrentNode.children[i] != null)
+                { 
+                    GUI.Displays[i].setBackground(Color.WHITE);
+                    GUI.Buttons[i].setEnabled(true);
+                }
+                else 
+                {
+                    GUI.Displays[i].setBackground(Color.BLACK);
+                    GUI.Buttons[i].setEnabled(false);
+                }
+            }
+        }
+        
+        void CheckFinishGame()
+        {
+            if(CurrentNode.final_node)
+            {
+                String confirmText = "Congrats! You reached finish point!\n";
+                confirmText = confirmText + "Click 'Yes' to Play a different Maze.\n";
+                confirmText = confirmText + "Click 'No' to restart the Maze.\n";
+                confirmText = confirmText + "Click 'Cancel' to explore more of the same Maze.";
+                int reply = JOptionPane.showConfirmDialog(Background_Panel, confirmText);
+                if(reply == 0)
+                {
+                    System.out.println("Reply: 0");
+                    
+                    System.out.println("----------------------------------------------");
+                    GenerateMaze_Button.doClick();
+                    RestartMaze_Button.doClick();
+                }
+                else if(reply == 1)
+                {
+                    System.out.println("Reply: 1");
+
+                    RestartMaze_Button.doClick();
+                }
+                else if(reply == 2)
+                {
+                    System.out.println("Reply: 2");
+                }
+            }
+        }
+    }
+    
+    public class GUIProperties
+    {
+        // GUI Elements
+        int max_branches;
+        JLabel[] Displays;
+        JButton[] Buttons;
+        
+        JLabel goBack_Label;
+        JButton goBack_Button;
+        // GUI Elements
+        
+        public GUIProperties(int max_branches_param, JLabel[] Displays_param, JButton[] Buttons_param, JLabel goBack_Label_param, JButton goBack_Button_param)
+        {
+            max_branches = max_branches_param;
+            Displays = Displays_param;
+            Buttons = Buttons_param;
+            
+            goBack_Label = goBack_Label_param;
+            goBack_Button = goBack_Button_param;
+        }
     }
     
     PathTree Maze;
+    PathTreeNode PlayerNode;
+    MazeNavigate game;
+    GUIProperties GUI;
     
     private void GenerateMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateMaze_ButtonActionPerformed
+    System.out.println("----------------------------------------------");
+    System.out.println("Generating new maze...");
+    
     Maze = new PathTree();
-    Maze.InitPathTreeParameters(2, 0.5f, 3, 0.5f, 0.0f, 1);
+    
+//  Path Tree Parameters - 
+//  int max_tree_depth_param, float dead_end_probability_param, 
+//  int max_branches_param, float branch_formation_probability_param, float cycle_formation_probability_param, 
+//  int no_of_final_nodes_param
+
+    Maze.InitPathTreeParameters(3, 0.5f, 3, 0.5f, 0.0f, 2);
     
     Maze.GeneratePathTree();
     
     System.out.println("Displaying Path Tree...");
     Maze.DisplayPathTree(Maze.RootNode, 1);
     }//GEN-LAST:event_GenerateMaze_ButtonActionPerformed
+
+    private void SolutionMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SolutionMaze_ButtonActionPerformed
+    System.out.println("Displaying Solutions to Maze...");
+    
+    Maze.DisplayFinishPaths();
+    }//GEN-LAST:event_SolutionMaze_ButtonActionPerformed
+
+    private void RestartMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestartMaze_ButtonActionPerformed
+    System.out.println("Restarting Maze...");
+        
+    // Init GUI
+    JLabel[] Displays = {Left_Label, Front_Label, Right_Label};
+    JButton[] Buttons = {Left_Button, Front_Button, Right_Button};
+    GUI = new GUIProperties(Maze.max_branches, Displays, Buttons, Back_Label, Back_Button);
+    
+    // Init Navigation
+    PlayerNode = Maze.RootNode;
+    game = new MazeNavigate(Maze, GUI);
+    game.UpdateGUI();
+    Maze.DisplayNodeProperties(PlayerNode);
+    game.CheckFinishGame();
+    }//GEN-LAST:event_RestartMaze_ButtonActionPerformed
+
+    private void Back_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Back_ButtonActionPerformed
+    PlayerNode = game.Move(true, -1);
+    game.UpdateGUI();
+    Maze.DisplayNodeProperties(PlayerNode);
+    game.CheckFinishGame();
+    }//GEN-LAST:event_Back_ButtonActionPerformed
+
+    private void Front_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Front_ButtonActionPerformed
+    PlayerNode = game.Move(false, 1);
+    game.UpdateGUI();
+    Maze.DisplayNodeProperties(PlayerNode);
+    game.CheckFinishGame();
+    }//GEN-LAST:event_Front_ButtonActionPerformed
+
+    private void Left_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Left_ButtonActionPerformed
+    PlayerNode = game.Move(false, 0);
+    game.UpdateGUI();
+    Maze.DisplayNodeProperties(PlayerNode);
+    game.CheckFinishGame();
+    }//GEN-LAST:event_Left_ButtonActionPerformed
+
+    private void Right_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Right_ButtonActionPerformed
+    PlayerNode = game.Move(false, 2);
+    game.UpdateGUI();
+    Maze.DisplayNodeProperties(PlayerNode);
+    game.CheckFinishGame();
+    }//GEN-LAST:event_Right_ButtonActionPerformed
 
     /**
      * @param args the command line arguments

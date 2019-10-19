@@ -268,6 +268,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Left_ButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Front_Button">
           <Properties>
@@ -289,6 +292,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Front_ButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Back_Button">
           <Properties>
@@ -310,6 +316,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Back_ButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="Right_Button">
           <Properties>
@@ -331,6 +340,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="Right_ButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="GenerateMaze_Button">
           <Properties>
@@ -376,6 +388,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="SolutionMaze_ButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="RestartMaze_Button">
           <Properties>
@@ -397,6 +412,9 @@
               </Border>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RestartMaze_ButtonActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
