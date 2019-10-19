@@ -583,7 +583,6 @@ public class Maze_BasicGen_BasicGUI extends javax.swing.JFrame {
         {
             if(CurrentNode == null) 
             {
-                System.out.println("HELLOOO NULLL BOIII");
                 return null;
             }
             
