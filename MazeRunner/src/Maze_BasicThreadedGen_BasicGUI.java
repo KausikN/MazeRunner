@@ -325,6 +325,10 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         String[] final_node_ids;
         // Game Params
         
+        // Internal Params
+        String[] nodes_displayed;
+        // Internal Params
+        
         
         public PathTree()
         {
@@ -347,8 +351,9 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
             no_of_nodes = 0;
         }
         
-        void GeneratePathTree(int no_of_threads)
+        void GeneratePathTree()
         {
+            int no_of_threads = max_branches;
             // Init
             current_tree_depth = 0;
             
@@ -383,6 +388,12 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                 }
             }
             
+            // Init displayed nodes
+            nodes_displayed = new String[no_of_nodes + 1];
+            for(int i=0;i<no_of_nodes + 1;i++)
+            {
+                nodes_displayed[i] = null;             
+            }
             
             // Set Final Nodes and store ids
             SetFinalNodes();
@@ -557,13 +568,26 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         {
             if(p != null)
             {
-                if(p.final_node) System.out.println(depth + " - " + p.id + " : final");
-                else System.out.println(depth + " - " + p.id);
-                for(int i=0;i<max_branches;i++)
+                boolean already_displayed = false;
+                int null_index = -1;
+                for(int i=0;i<no_of_nodes + 1;i++)
                 {
-                    if(p.children[i] != null)
+                    if(nodes_displayed[i] == null && null_index == -1) null_index = i;
+                    else if(nodes_displayed[i] != null && nodes_displayed[i].equals(p.id)) already_displayed = true;
+                }
+                if(!already_displayed)
+                {
+//                    System.out.println("NULL INDEX: " + null_index + " / " + no_of_nodes);
+                    nodes_displayed[null_index] = p.id;
+                    
+                    if(p.final_node) System.out.println(depth + " - " + p.id + " : final");
+                    else System.out.println(depth + " - " + p.id);
+                    for(int i=0;i<max_branches;i++)
                     {
-                        DisplayPathTree(p.children[i], depth + 1);
+                        if(p.children[i] != null)
+                        {
+                            DisplayPathTree(p.children[i], depth + 1);
+                        }
                     }
                 }
             }
@@ -773,9 +797,9 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
 //  int max_branches_param, float branch_formation_probability_param, float cycle_formation_probability_param, 
 //  int no_of_final_nodes_param
 
-    Maze.InitPathTreeParameters(3, 0.5f, 3, 0.5f, 0.0f, 2);
+    Maze.InitPathTreeParameters(5, 0.0f, 3, 0.5f, 0.0f, 1);
     
-    Maze.GeneratePathTree(3);
+    Maze.GeneratePathTree();
     
     System.out.println("Displaying Path Tree...");
     Maze.DisplayPathTree(Maze.RootNode, 1);
