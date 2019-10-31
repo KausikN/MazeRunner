@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -48,6 +47,8 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         SolutionMaze_Button = new javax.swing.JButton();
         RestartMaze_Button = new javax.swing.JButton();
         Player_Img = new javax.swing.JLabel();
+        CurLoc_Label = new javax.swing.JLabel();
+        Solution_Label = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
         jDialog1.getContentPane().setLayout(jDialog1Layout);
@@ -222,6 +223,16 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         Player_Img.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         Player_Img.setOpaque(true);
 
+        CurLoc_Label.setBackground(new java.awt.Color(0, 0, 0));
+        CurLoc_Label.setForeground(new java.awt.Color(0, 204, 204));
+        CurLoc_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        CurLoc_Label.setOpaque(true);
+
+        Solution_Label.setBackground(new java.awt.Color(0, 0, 0));
+        Solution_Label.setForeground(new java.awt.Color(0, 204, 204));
+        Solution_Label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        Solution_Label.setOpaque(true);
+
         javax.swing.GroupLayout Background_PanelLayout = new javax.swing.GroupLayout(Background_Panel);
         Background_Panel.setLayout(Background_PanelLayout);
         Background_PanelLayout.setHorizontalGroup(
@@ -241,12 +252,13 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                                         .addComponent(Left_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(54, 54, 54)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
-                        .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Back_Label, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(SolutionMaze_Button, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(Back_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Background_PanelLayout.createSequentialGroup()
                                 .addComponent(Player_Img, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(23, 23, 23))))
+                                .addGap(23, 23, 23))
+                            .addComponent(SolutionMaze_Button, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(Solution_Label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(Background_PanelLayout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,7 +285,9 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                 .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Background_PanelLayout.createSequentialGroup()
                         .addComponent(Title_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(356, 356, 356))
+                        .addGap(213, 213, 213)
+                        .addComponent(CurLoc_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Background_PanelLayout.createSequentialGroup()
                         .addComponent(Back_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(449, 449, 449))))
@@ -281,26 +295,29 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         Background_PanelLayout.setVerticalGroup(
             Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Background_PanelLayout.createSequentialGroup()
-                .addComponent(Title_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Title_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Background_PanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(CurLoc_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27)
                 .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Background_PanelLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Front_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Front_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(Player_Img, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                        .addGap(55, 55, 55)
+                        .addComponent(Player_Img, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
                         .addGap(23, 23, 23)
                         .addComponent(Back_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(Background_PanelLayout.createSequentialGroup()
                         .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(Background_PanelLayout.createSequentialGroup()
-                                .addGap(140, 140, 140)
+                                .addGap(133, 133, 133)
                                 .addComponent(Left_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Left_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Background_PanelLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Right_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(Right_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -308,12 +325,18 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Back_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(GenerateMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SolutionMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(RestartMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(34, 34, 34))
+                .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(Background_PanelLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(Background_PanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(GenerateMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RestartMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(Background_PanelLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(SolutionMaze_Button, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(Solution_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(10, 10, 10))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -667,6 +690,7 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
         
         void DisplayFinishPaths()
         {
+            String finish_path = "";
             for(int i=0;i<no_of_final_nodes;i++)
             {
                 System.out.println("Finish Path: " + (i+1));
@@ -679,6 +703,19 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                     if(final_node_ids[i].charAt(str_index) == '_' || str_index == final_node_ids[i].length() - 1)
                     {
                         System.out.print(node + " -> ");
+                        if(i == 0)
+                        {
+                            if(Maze.max_branches == 3)
+                            {
+                                char next_path = 'F';
+                                if(node.equals("0")) next_path = 'L';
+                                else if(node.equals("1")) next_path = 'F';
+                                else if(node.equals("2")) next_path = 'R';
+                                if(finish_path.equals("")) finish_path = "S" + "->";
+                                else finish_path = finish_path + next_path + " -> ";
+                            }
+                            else finish_path = finish_path + node + " -> ";
+                        } 
                         node = "";
                     }
                     str_index = str_index + 1;
@@ -686,10 +723,46 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
                 System.out.print("finish");
                 System.out.println("");
             }
+            finish_path = finish_path + "finish";
+            if(Solution_Display_Toggle) Solution_Label.setText(finish_path);
+            else Solution_Label.setText("");
         }
         
         void DisplayNodeProperties(PathTreeNode node)
         {
+            String curloc_path = "";
+            int branch_no = 0;
+            for(int i=0;i<node.id.length();i++)
+            {
+                if(node.id.charAt(i) == '_' || i == node.id.length()-1)
+                {
+                    if(i == node.id.length()-1)
+                    {
+                        branch_no = 10*branch_no + ((int)node.id.charAt(i) - 48);
+                    }
+                    if(node.children.length == 3)
+                    {
+                        char next_node = 'F';
+                        if(branch_no == 0) next_node = 'L';
+                        else if(branch_no == 1) next_node = 'F';
+                        else if(branch_no == 2) next_node = 'R';
+                        if(curloc_path.equals("")) curloc_path = "S";
+                        else curloc_path = curloc_path + "->" + next_node;
+                        branch_no = 0;
+                    }
+                    else 
+                    {
+                        if(curloc_path.equals("")) curloc_path = branch_no + "";
+                        else curloc_path = curloc_path + "_" + branch_no;
+                        branch_no = 0;
+                    }
+                }
+                else 
+                {
+                    branch_no = 10*branch_no + ((int)node.id.charAt(i) - 48);
+                }
+            }
+            CurLoc_Label.setText(curloc_path);
             System.out.println("Node: ");
             System.out.println("\tID: " + node.id);
             System.out.println("\tNo of children: " + node.no_of_children);
@@ -862,7 +935,21 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
     MazeNavigate game;
     GUIProperties GUI;
     
+    boolean Solution_Display_Toggle = true;
+    
+    // Maze Params
+    int MAIN_max_tree_depth;// = 5;
+    float MAIN_dead_end_probability;// = 0.0f;
+    int MAIN_max_branches;// = 3;
+    float MAIN_branch_formation_probability;// = 0.5f;
+    float MAIN_cycle_formation_probability;// = 0.0f;
+    int MAIN_no_of_final_nodes;// = 1;
+    // Maze Params
+    
     private void GenerateMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GenerateMaze_ButtonActionPerformed
+    Solution_Label.setText(""); // Clear Solution Display
+    Solution_Display_Toggle = true;
+    
     System.out.println("----------------------------------------------");
     System.out.println("Generating new maze...");
     
@@ -873,21 +960,26 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
 //  int max_branches_param, float branch_formation_probability_param, float cycle_formation_probability_param, 
 //  int no_of_final_nodes_param
 
-    Maze.InitPathTreeParameters(5, 0.0f, 3, 0.5f, 0.0f, 1);
+    Maze.InitPathTreeParameters(MAIN_max_tree_depth, MAIN_dead_end_probability, MAIN_max_branches, MAIN_branch_formation_probability, MAIN_cycle_formation_probability, MAIN_no_of_final_nodes);
     
     Maze.GeneratePathTree();
     
     System.out.println("Displaying Path Tree...");
     Maze.DisplayPathTree(Maze.RootNode, 1);
+    
+    RestartMaze_Button.doClick();
     }//GEN-LAST:event_GenerateMaze_ButtonActionPerformed
 
     private void SolutionMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SolutionMaze_ButtonActionPerformed
     System.out.println("Displaying Solutions to Maze...");
-    
     Maze.DisplayFinishPaths();
+    Solution_Display_Toggle = !Solution_Display_Toggle;
     }//GEN-LAST:event_SolutionMaze_ButtonActionPerformed
 
     private void RestartMaze_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestartMaze_ButtonActionPerformed
+    Solution_Label.setText(""); // Clear Solution Display
+    Solution_Display_Toggle = true;
+    
     System.out.println("Restarting Maze...");
         
     // Init GUI
@@ -1026,6 +1118,7 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
     private javax.swing.JButton Back_Button;
     private javax.swing.JLabel Back_Label;
     private javax.swing.JPanel Background_Panel;
+    private javax.swing.JLabel CurLoc_Label;
     private javax.swing.JButton Front_Button;
     private javax.swing.JLabel Front_Label;
     private javax.swing.JButton GenerateMaze_Button;
@@ -1036,6 +1129,7 @@ public class Maze_BasicThreadedGen_BasicGUI extends javax.swing.JFrame {
     private javax.swing.JButton Right_Button;
     private javax.swing.JLabel Right_Label;
     private javax.swing.JButton SolutionMaze_Button;
+    private javax.swing.JLabel Solution_Label;
     private javax.swing.JLabel Title_Label;
     private javax.swing.JDialog jDialog1;
     // End of variables declaration//GEN-END:variables
