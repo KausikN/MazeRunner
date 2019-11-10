@@ -266,16 +266,34 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="MaxDepth_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="5"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="DeadEnd_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0.0"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="MaxBranches_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="3"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="BranchForm_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0.5"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="CycleForm_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="0.0"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="FinalNode_TextField">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="1"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

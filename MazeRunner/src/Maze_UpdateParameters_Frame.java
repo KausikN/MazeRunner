@@ -110,6 +110,18 @@ public class Maze_UpdateParameters_Frame extends javax.swing.JFrame {
         FinalNode_Label.setForeground(new java.awt.Color(0, 255, 204));
         FinalNode_Label.setText("Number of Win Locations");
 
+        MaxDepth_TextField.setText("5");
+
+        DeadEnd_TextField.setText("0.0");
+
+        MaxBranches_TextField.setText("3");
+
+        BranchForm_TextField.setText("0.5");
+
+        CycleForm_TextField.setText("0.0");
+
+        FinalNode_TextField.setText("1");
+
         javax.swing.GroupLayout Background_PanelLayout = new javax.swing.GroupLayout(Background_Panel);
         Background_Panel.setLayout(Background_PanelLayout);
         Background_PanelLayout.setHorizontalGroup(
