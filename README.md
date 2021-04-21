@@ -1,4 +1,4 @@
-# MazeRunner-Project
+# MazeRunner
  Netbeans Project for Maze Generation and Playing!
  
   - Done using Java (Netbeans)
